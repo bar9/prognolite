@@ -5,8 +5,111 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
-#prediction-guests {
-  font-size: 15vh;
+#prediction-guests-noon,
+#prediction-guests-evening,
+#factors-holidays,
+#factors-weather{
+  font-size: 50px;
   text-align: center;
   display: none;
+}
+
+#prediction-guests-noon{
+  background-color: #f9df81;
+}
+
+#prediction-guests-evening{
+  background-color: #71acd6
+}
+
+#factors-holidays,
+#factors-weather,
+#factors-events,
+#factors-placeholder{
+  font-size: 25px;
+  text-align: center;
+  padding: 0px;
+  min-height: 14vw;
+}
+
+#factors-holidays {
+  background-color: #5fdd58;
+  color: white;
+  padding-top: 8px;
+}
+
+#factors-events {
+  background-color: #a984f9;
+  color:white;
+  font-size: 30px;
+  padding-top: 6px;
+}
+
+#factors-placeholder {
+  background-color: #55edcc;
+  color: white;
+  font-size: 30px;
+  padding-top: 6px;
+}
+
+#factors-weather img{
+ width: 100%;
+ height: 100%;
+}
+
+.res{
+  display: none;
+}
+.people-count{
+
+}
+
+.arc text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+csv {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+center{
+  position: relative;
+}
+
+#center-text{
+  font-size: 55px;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  z-index: 1000;
+  top: 17vw;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.cutlery {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+}
+.cutlery.left{
+  top: 45px;
+  left: 20px;
+}
+.cutlery.right{
+  top: 45px;
+  right: 20px;
+}
+
+.form-inline label{
+  display:inline;
+  float: left;
 }

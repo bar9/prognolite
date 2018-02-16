@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="bootstrap/favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>Prognolite</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -34,6 +34,7 @@
 
 <body>
 
+<script src="//d3js.org/d3.v3.min.js"></script>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -44,7 +45,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="#">Prognolite</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -59,19 +60,65 @@
 <div class="container">
 
     <div class="starter-template">
-        <h1>Prognolite</h1>
-        <p class="lead"></p>
-        <form action="#">
+
+        <form class="form-inline" action="#">
             <div class="form-group">
                 <label for="date">Date:</label>
                 <input type="date" class="form-control" id="date">
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default">Get prediction</button>
         </form>
     </div>
-    <div class="well well-lg" id="prediction-guests">
-    </div>
 
+
+
+    <center>
+        <img class="cutlery left" style="float:left" src="img/fork.svg" width="50">
+        <div id="center-text">
+        </div>
+        <img class="cutlery right" style="float:right" src="img/knife.svg" width="50">
+    </center>
+
+    <div class="row res">
+        <div class="col-xs-6">
+            <p>Noon: <span class="people-count glyphicon glyphicon-user"></span></p>
+            <div class="well well-md" id="prediction-guests-noon">
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <p>Evening: <span class="people-count glyphicon glyphicon-user"></span></p>
+            <div class="well well-md" id="prediction-guests-evening">
+            </div>
+
+        </div>
+    </div>
+    <h3 class="res">Indicators</h3>
+    <div class="row res">
+        <div class="col-xs-3">
+            <p>Weather:</p>
+            <div class="well well-md" id="factors-weather">
+                <img src="https://content.meteoblue.com/var/ezwebin_site/storage/images/media/images/weather-pictograms/07_day_altocumulus/7323-1-eng-GB/07_day_altocumulus.png">
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <p>Holidays:</p>
+            <div class="well well-md" id="factors-holidays">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <p>Events:</p>
+            <div class="well well-md" id="factors-events">
+                <span class="glyphicon glyphicon-certificate"></span>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <p>Lipsum:</p>
+            <div class="well well-md" id="factors-placeholder">
+                <span class="glyphicon glyphicon-star"></span>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -84,24 +131,83 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
 <script>window.jQuery || document.write('<script src="bootstrap/assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script type="text/javascript">
-
-    $('form').on('submit',function(e){
+$('form').on('submit',function(e){
     e.preventDefault();
     $.ajax({
         type     : "GET",
         cache    : false,
-        url      : 'http://127.0.0.1:8081/api/v1.0/guests',
+        url      : 'http://127.0.0.1:8081/api/v1.0/guests/'+'2017-30-42',
         success  : function(data) {
             //$(".printArea").empty().append(data).css('visibility','visible');
-            $("#prediction-guests").html(data.guests).show();
+            $("#prediction-guests-noon").html(data.noon).show();
+            $("#prediction-guests-evening").html(data.evening).show();
+            $(".res").show();
+            $("#factors-holidays").show();
+            $("#factors-weather").show();
+            $("#factors-events").show();
+            $("#factors-placeholder").show();
+            drawDonut(
+                {
+                    noon: data.noon,
+                    evening: data.evening
+                }
+            );
         }
     });
 });
+
+function drawDonut(indata) {
+
+  var width = window.innerWidth - 170,
+    height = window.innerWidth - 170,
+    radius = Math.min(width, height) / 2;
+
+var color = d3.scale.ordinal()
+    .range(["#71acd6","#f9df81"]);
+
+var arc = d3.svg.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(radius - 40);
+
+var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) { return d.people; });
+
+var svg = d3.select("center").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+var data = [{cat: "Evening", people: indata.evening},{cat: "Noon", people: indata.noon}];
+
+  var g = svg.selectAll(".arc")
+      .data(pie(data))
+    .enter().append("g")
+      .attr("class", "arc");
+
+  g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d) { return color(d.data.cat); });
+
+  $("#center-text").html(parseInt(indata.noon)+parseInt(indata.evening));
+
+  $(".cutlery").show();
+
+
+function type(d) {
+  d.people = +d.people;
+  return d;
+}
+
+}
+
 
 </script>
 </body>

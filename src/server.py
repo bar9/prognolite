@@ -7,14 +7,19 @@ CORS(app)
 
 def call_model(date):
     return {
-        'guests': 34,
-        'distribution': [16,43]
+        "noon": 56,
+        "evening": 28,
+        "date": date
     }
 
-@app.route('/api/v1.0/guests', methods=['GET'])
-def get_tasks():
-    return jsonify(call_model("date"))
+def train_model():
+    pass
+
+@app.route('/api/v1.0/guests/<string:date>', methods=['GET'])
+def get_prediction(date):
+    return jsonify(call_model(date))
 
 if __name__ == '__main__':
+    train_model()
     app.run(host='0.0.0.0', port=8081, debug=True)
 
