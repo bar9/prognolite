@@ -118,3 +118,14 @@ body {
   display:inline;
   float: left;
 }
+
+div#loader{
+  position: absolute;
+  z-index: 1001;
+  text-align: center;
+  display: none;
+}
+
+div#loader img{
+  width: 365px;
+}

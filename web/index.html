@@ -60,14 +60,15 @@
 
         <form class="form-inline" action="#">
             <div class="form-group">
-                <!--<label for="date">Date:</label>-->
                 <input type="date" class="form-control" id="date">
             </div>
             <button type="submit" class="btn btn-primary pull-right">Get prediction</button>
         </form>
     </div>
 
-
+    <div id="loader">
+        <img src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif">
+    </div>
 
     <center>
         <img class="cutlery left" style="float:left" src="img/fork.svg" height="115">
@@ -95,7 +96,6 @@
             <!--<p>Weather:</p>-->
             <div class="well well-md" id="factors-weather">
                 <img src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif">
-                <!--<img src="https://content.meteoblue.com/var/ezwebin_site/storage/images/media/images/weather-pictograms/07_day_altocumulus/7323-1-eng-GB/07_day_altocumulus.png">-->
             </div>
         </div>
         <div class="col-xs-3">
@@ -132,215 +132,219 @@
 
 <script>window.jQuery || document.write('<script src="bootstrap/assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script type="text/javascript">
 
-var client_id = 'hEVoxbEB7qkt2yuysgwo';
-var client_secret = 'MLtZAZ2BF6KiEvFeKNnsYQkeC9WHhEMMlq9E2rvb';
+    var client_id = 'hEVoxbEB7qkt2yuysgwo';
+    var client_secret = 'MLtZAZ2BF6KiEvFeKNnsYQkeC9WHhEMMlq9E2rvb';
 
-var user = 'openhackdays18@prognolite.ch';
-var password = 'mWUtsY7UpPS';
+    var user = 'openhackdays18@prognolite.ch';
+    var password = 'mWUtsY7UpPS';
 
-var accessToken = null;
-var accessTokenExpires = null;
-var refreshToken = null;
+    var accessToken = null;
+    var accessTokenExpires = null;
+    var refreshToken = null;
 
 
-$('form').on('submit',function(e){
-    e.preventDefault();
-    updateWeatherIcon();
-    $.ajax({
-        type     : "GET",
-        cache    : false,
-        url      : 'http://127.0.0.1:8081/api/v1.0/guests/'+'2017-30-42',
-        success  : function(data) {
-            //$(".printArea").empty().append(data).css('visibility','visible');
-            //$("#prediction-guests-noon").html(data.noon).show();
-            //$("#prediction-guests-evening").html(data.evening).show();
-            //$(".res").show();
-            //$("#factors-holidays").show();
-            //$("#factors-weather").show();
-            //$("#factors-events").show();
-            //$("#factors-placeholder").show();
-            //drawDonut(
-            //    {
-            //        noon: data.noon,
-            //        evening: data.evening
-            //    }
-            //);
-            updatePrediction();
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-        alert("API not reachable. Status: "+xhr.status);
-        alert(thrownError);
-      }
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        updateWeatherIcon();
+        $.ajax({
+            type: "GET",
+            cache: false,
+            url: 'http://127.0.0.1:8081/api/v1.0/guests/' + '2017-30-42',
+            success: function (data) {
+
+                updatePrediction();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("API not reachable. Status: " + xhr.status);
+                alert(thrownError);
+            }
+        });
     });
-});
 
-var unixTime = function(datestr){
-  return Math.round((new Date(datestr).getTime()/1000));
-};
+    var unixTime = function (datestr) {
+        return Math.round((new Date(datestr).getTime() / 1000));
+    };
 
-var updateWeatherIcon = function() {
-  $("#factors-weather").html('<img src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif">');
+    var updateWeatherIcon = function () {
+        $("#factors-weather").html('<img src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif">');
 
-  var timestamp = unixTime($('input[type="date"]').val());
-  var weatherParams = "?format=json&from="+timestamp+"&to="+timestamp+"&time_series=m-histd_meteoblue_fluntern_pictocode_f&language=en-gb#api-Timeserie-GetTimeserie"
+        var timestamp = unixTime($('input[type="date"]').val());
+        var weatherParams = "?format=json&from=" + timestamp + "&to=" + timestamp
+        + "&time_series=m-histd_meteoblue_fluntern_pictocode_f,c-holid_ftk_ch_evt_f&language=en-gb#api-Timeserie-GetTimeserie"
 
-  $.ajax({
-  url: "https://api.prognolite.com/1.0/oauth/access_token.json",
-  data: {
-    "client_id": client_id,
-    "client_secret":client_secret,
-    "username": user,
-    "password": password,
-    "grant_type": "password"
-  },
-  method: 'POST',
-  success: function(res){
-    accessToken = res.access_token;
-    accessTokenExpires = Date.now() + res.expires_in * 60;
-    refreshToken = res.refresh_token;
+        $.ajax({
+            url: "https://api.prognolite.com/1.0/oauth/access_token.json",
+            data: {
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "username": user,
+                "password": password,
+                "grant_type": "password"
+            },
+            method: 'POST',
+            success: function (res) {
+                accessToken = res.access_token;
+                accessTokenExpires = Date.now() + res.expires_in * 60;
+                refreshToken = res.refresh_token;
 
-    performRequest();
-  }
-});
+                performRequest();
+            }
+        });
+
 // perform request:
-function performRequest(){
-  $.ajax({
+        function performRequest() {
+            $.ajax({
 
-    //https://api.prognolite.com/1.0/doc/
-    url: "https://api.prognolite.com/1.0/en-gb/timeseries/get"+weatherParams,
-    data: {
-      "client_id": client_id,
-      "client_secret": client_secret,
-    },
-    headers: {
-      "Authorization": 'Bearer ' + accessToken
-    },
-    success: function(res){
-      var code = res.data[0]["m-histd_meteoblue_fluntern_pictocode_f"].val;
-      $("#factors-weather").html('<img src="img/weather/'+code+'_day.svg">');
-    }
-  });
-}
-};
-
-var updatePrediction = function() {
-  var timestamp = unixTime($('input[type="date"]').val());
-  var predictionParams = "?time_series=f-sample-lunch_hd18_d0,f-sample-evening_hd18_d0&from="
-    + timestamp
-    + "&to="
-    + timestamp
-    + "&resolution=86400&format=json";
-
-    $.ajax({
-  url: "https://api.prognolite.com/1.0/oauth/access_token.json",
-  data: {
-    "client_id": client_id,
-    "client_secret":client_secret,
-    "username": user,
-    "password": password,
-    "grant_type": "password"
-  },
-  method: 'POST',
-  success: function(res){
-    accessToken = res.access_token;
-    accessTokenExpires = Date.now() + res.expires_in * 60;
-    refreshToken = res.refresh_token;
-
-    performRequest();
-  }
-});
-// perform request:
-function performRequest(){
-  $.ajax({
-
-    //https://api.prognolite.com/1.0/doc/
-    url: "https://api.prognolite.com/1.0/en-gb/timeseries/get"+predictionParams,
-    data: {
-      "client_id": client_id,
-      "client_secret": client_secret,
-    },
-    headers: {
-      "Authorization": 'Bearer ' + accessToken
-    },
-    success: function(res){
-      var data = {};
-
-      data.evening = parseInt(res.data[0]['f-sample-evening_hd18_d0'].val);
-      data.noon = parseInt(res.data[0]['f-sample-lunch_hd18_d0'].val);
-
-
-      $("#prediction-guests-noon").html(data.noon).show();
-      $("#prediction-guests-evening").html(data.evening).show();
-      $(".res").show();
-      $("#factors-holidays").show();
-      $("#factors-weather").show();
-      $("#factors-events").show();
-      $("#factors-placeholder").show();
-      drawDonut(
-        {
-          noon: data.noon,
-          evening: data.evening
+                //https://api.prognolite.com/1.0/doc/
+                url: "https://api.prognolite.com/1.0/en-gb/timeseries/get" + weatherParams,
+                data: {
+                    "client_id": client_id,
+                    "client_secret": client_secret,
+                },
+                headers: {
+                    "Authorization": 'Bearer ' + accessToken
+                },
+                success: function (res) {
+                    var code = res.data[0]["m-histd_meteoblue_fluntern_pictocode_f"].val;
+                    var hasEvent = false;
+                    if(res.data[0]["c-holid_ftk_ch_evt_f"].val){
+                      var hasEvent=true;
+                    }
+                    if(hasEvent){
+                      $("#factors-holidays").css("background-color","#5fdd58");
+                    }else{
+                      $("#factors-holidays").css("background-color","#dadada");
+                    }
+                    $("#factors-weather").html('<img src="img/weather/' + code + '_day.svg">');
+                }
+            });
         }
-      );
+    };
 
-      //var code = res.data[0]["m-histd_meteoblue_fluntern_pictocode_f"].val;
-      //$("#factors-weather").html('<img src="img/weather/'+code+'_day.svg">');
-      console.log(res);
+    var updatePrediction = function () {
+        var timestamp = unixTime($('input[type="date"]').val());
+        var predictionParams = "?time_series=f-sample-lunch_hd18_d0,f-sample-evening_hd18_d0&from="
+            + timestamp
+            + "&to="
+            + timestamp
+            + "&resolution=86400&format=json";
+
+        $("#loader").show();
+
+        $.ajax({
+            url: "https://api.prognolite.com/1.0/oauth/access_token.json",
+            data: {
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "username": user,
+                "password": password,
+                "grant_type": "password"
+            },
+            method: 'POST',
+            success: function (res) {
+                accessToken = res.access_token;
+                accessTokenExpires = Date.now() + res.expires_in * 60;
+                refreshToken = res.refresh_token;
+
+                performRequest();
+            }
+        });
+
+// perform request:
+        function performRequest() {
+            $.ajax({
+
+                //https://api.prognolite.com/1.0/doc/
+                url: "https://api.prognolite.com/1.0/en-gb/timeseries/get" + predictionParams,
+                data: {
+                    "client_id": client_id,
+                    "client_secret": client_secret,
+                },
+                headers: {
+                    "Authorization": 'Bearer ' + accessToken
+                },
+                success: function (res) {
+                    var data = {};
+
+                    data.evening = parseInt(res.data[0]['f-sample-evening_hd18_d0'].val);
+                    data.noon = parseInt(res.data[0]['f-sample-lunch_hd18_d0'].val);
+
+
+                    $("#prediction-guests-noon").html(data.noon).show();
+                    $("#prediction-guests-evening").html(data.evening).show();
+                    $(".res").show();
+                    $("#factors-holidays").show();
+                    $("#factors-weather").show();
+                    $("#factors-events").show();
+                    $("#factors-placeholder").show();
+                    drawDonut(
+                        {
+                            noon: data.noon,
+                            evening: data.evening
+                        }
+                    );
+
+                    //var code = res.data[0]["m-histd_meteoblue_fluntern_pictocode_f"].val;
+                    //$("#factors-weather").html('<img src="img/weather/'+code+'_day.svg">');
+                    $("#loader").hide();
+                }
+            });
+        }
+
+
+    };
+
+    function drawDonut(indata) {
+
+        $("center").find("svg").remove();
+        var width = $("body").width() - 170,
+            height = $("body").width() - 170,
+            radius = Math.min(width, height) / 2;
+
+        var color = d3.scale.ordinal()
+            .range(["#71acd6", "#f9df81"]);
+
+        var arc = d3.svg.arc()
+            .outerRadius(radius - 10)
+            .innerRadius(radius - 40);
+
+        var pie = d3.layout.pie()
+            .sort(null)
+            .value(function (d) {
+                return d.people;
+            });
+
+        var svg = d3.select("center").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        var data = [{cat: "Evening", people: indata.evening}, {cat: "Noon", people: indata.noon}];
+
+        var g = svg.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+
+        g.append("path")
+            .attr("d", arc)
+            .style("fill", function (d) {
+                return color(d.data.cat);
+            });
+
+        $("#center-text").html(parseInt(indata.noon) + parseInt(indata.evening));
+
+        $(".cutlery").show();
+
+
+        function type(d) {
+            d.people = +d.people;
+            return d;
+        }
     }
-  });
-}
-
-
-};
-
-function drawDonut(indata) {
-
-  $("center").find("svg").remove();
-  var width = $("body").width() - 170,
-    height = $("body").width() - 170,
-    radius = Math.min(width, height) / 2;
-
-var color = d3.scale.ordinal()
-    .range(["#71acd6","#f9df81"]);
-
-var arc = d3.svg.arc()
-    .outerRadius(radius - 10)
-    .innerRadius(radius - 40);
-
-var pie = d3.layout.pie()
-    .sort(null)
-    .value(function(d) { return d.people; });
-
-var svg = d3.select("center").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-  .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-var data = [{cat: "Evening", people: indata.evening},{cat: "Noon", people: indata.noon}];
-
-  var g = svg.selectAll(".arc")
-      .data(pie(data))
-    .enter().append("g")
-      .attr("class", "arc");
-
-  g.append("path")
-      .attr("d", arc)
-      .style("fill", function(d) { return color(d.data.cat); });
-
-  $("#center-text").html(parseInt(indata.noon)+parseInt(indata.evening));
-
-  $(".cutlery").show();
-
-
-function type(d) {
-  d.people = +d.people;
-  return d;
-}}
 
 </script>
 </body>
