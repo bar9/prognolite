@@ -24,7 +24,6 @@ Our App:
 
 <img src="https://prognolite.com/site/wp-content/uploads/2018/02/Bildschirmfoto-2018-02-17-um-15.05.35.png" width="300">
 
-https://github.com/bar9/prognolite
 
 Presentation: 
 
