@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="480px" height="420px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 480 420"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str3 {stroke:#062845;stroke-width:11.811}
+    .str0 {stroke:#CCCCCC;stroke-width:8.85827;stroke-linecap:round;stroke-linejoin:round}
+    .str1 {stroke:#CCCCCC;stroke-width:5.90551;stroke-linecap:round;stroke-linejoin:round}
+    .str2 {stroke:#CCCCCC;stroke-width:2.95276;stroke-linecap:round;stroke-linejoin:round}
+    .fil0 {fill:none}
+    .fil1 {fill:#023557}
+    .fil2 {fill:#FFF2C9}
+    .fil3 {fill:white;fill-opacity:0.000000}
+    .fil4 {fill:white;fill-opacity:0.101961}
+    .fil5 {fill:white;fill-opacity:0.200000}
+    .fil6 {fill:white;fill-opacity:0.301961}
+    .fil7 {fill:white;fill-opacity:0.400000}
+    .fil8 {fill:white;fill-opacity:0.501961}
+    .fil9 {fill:white;fill-opacity:0.600000}
+    .fil10 {fill:white;fill-opacity:0.701961}
+    .fil11 {fill:white;fill-opacity:0.800000}
+    .fil12 {fill:white;fill-opacity:0.901961}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_232630856">
+   <path class="fil0 str0" d="M416 59l-7 23m15 -8l-23 -6"/>
+   <path class="fil0 str1" d="M90 105l-12 45m29 -16l-45 -12"/>
+   <path class="fil0 str2" d="M282 13l-12 45m28 -16l-45 -12"/>
+   <path class="fil0 str0" d="M59 58l-6 23m14 -9l-23 -6"/>
+   <path class="fil0 str2" d="M91 332l-12 45m28 -17l-45 -12"/>
+   <path class="fil0 str2" d="M419 135l-12 45m29 -16l-45 -12"/>
+  </g>
+  <g id="_232631912">
+   <path class="fil1 str3" d="M382 210c0,-79 -63,-142 -142,-142 -79,0 -142,63 -142,142 0,79 63,142 142,142 79,0 142,-63 142,-142z"/>
+   <path class="fil2 str3" d="M254 69c-4,0 -9,0 -14,0 -78,0 -141,63 -141,141 0,78 63,141 141,141 5,0 9,0 13,0 18,-3 14,-21 8,-25 -29,-22 -49,-66 -49,-116 0,-51 20,-94 49,-117 7,-2 9,-21 -7,-24z"/>
+  </g>
+  <g id="_232619264">
+   <polygon class="fil3" points="480,221 0,221 0,210 480,210 "/>
+   <g>
+    <path class="fil4" d="M480 242c-160,0 -320,0 -480,0 0,-4 0,-7 0,-11 160,0 320,0 480,0 0,4 0,7 0,11z"/>
+    <path class="fil5" d="M480 263c-160,0 -320,0 -480,0 0,-4 0,-7 0,-11 160,0 320,0 480,0 0,4 0,7 0,11z"/>
+    <path class="fil6" d="M480 284c-160,0 -320,0 -480,0 0,-4 0,-7 0,-11 160,0 320,0 480,0 0,4 0,7 0,11z"/>
+    <path class="fil7" d="M480 305c-160,0 -320,0 -480,0 0,-4 0,-7 0,-11 160,0 320,0 480,0 0,4 0,7 0,11z"/>
+    <path class="fil8" d="M480 326c-160,0 -320,0 -480,0 0,-4 0,-7 0,-11 160,0 320,0 480,0 0,4 0,7 0,11z"/>
+    <path class="fil9" d="M480 347c-160,0 -320,0 -480,0 0,-4 0,-7 0,-11 160,0 320,0 480,0 0,4 0,7 0,11z"/>
+    <path class="fil10" d="M480 368c-160,0 -320,0 -480,0 0,-4 0,-7 0,-11 160,0 320,0 480,0 0,4 0,7 0,11z"/>
+    <path class="fil11" d="M480 389c-160,0 -320,0 -480,0 0,-4 0,-7 0,-11 160,0 320,0 480,0 0,4 0,7 0,11z"/>
+   </g>
+   <polygon class="fil12" points="480,410 0,410 0,399 480,399 "/>
+  </g>
+ </g>
+</svg>

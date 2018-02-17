@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X7 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="480px" height="420px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 480 420"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil0 {fill:#DCBE78}
+    .fil1 {fill:url(#id0)}
+   ]]>
+  </style>
+  <radialGradient id="id0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 -0 -0 0.999999 0 0)" cx="239.637" cy="241.039" r="203.125" fx="239.637" fy="241.039">
+   <stop offset="0" style="stop-opacity:0.4; stop-color:#DCBE78"/>
+   <stop offset="0.4" style="stop-opacity:0.4; stop-color:#DCBE78"/>
+   <stop offset="1" style="stop-opacity:0; stop-color:#DCBE78"/>
+  </radialGradient>
+ </defs>
+ <g id="Ebene_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <circle class="fil0" cx="336" cy="231" r="6"/>
+  <circle class="fil0" cx="361" cy="301" r="11"/>
+  <circle class="fil0" cx="335" cy="374" r="15"/>
+  <circle class="fil0" cx="417" cy="153" r="11"/>
+  <circle class="fil0" cx="425" cy="307" r="7"/>
+  <circle class="fil0" cx="134" cy="237" r="6"/>
+  <circle class="fil0" cx="77" cy="292" r="11"/>
+  <circle class="fil0" cx="291" cy="313" r="15"/>
+  <circle class="fil0" cx="60" cy="175" r="11"/>
+  <circle class="fil0" cx="270" cy="206" r="7"/>
+  <circle class="fil0" cx="95" cy="373" r="6"/>
+  <circle class="fil0" cx="166" cy="390" r="11"/>
+  <circle class="fil0" cx="199" cy="293" r="15"/>
+  <circle class="fil0" cx="215" cy="193" r="11"/>
+  <circle class="fil0" cx="253" cy="363" r="7"/>
+  <ellipse class="fil1" cx="240" cy="241" rx="236" ry="211"/>
+ </g>
+</svg>

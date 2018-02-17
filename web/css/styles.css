@@ -2,7 +2,8 @@ body {
   padding-top: 50px;
 }
 .starter-template {
-  padding: 40px 15px;
+  padding: 60px 15px;
+  padding-top: 20px;
   text-align: center;
 }
 #prediction-guests-noon,
@@ -29,7 +30,7 @@ body {
   font-size: 25px;
   text-align: center;
   padding: 0px;
-  min-height: 14vw;
+  min-height: 14.5vw;
 }
 
 #factors-holidays {
@@ -46,7 +47,7 @@ body {
 }
 
 #factors-placeholder {
-  background-color: #55edcc;
+  background-color: #dadada;
   color: white;
   font-size: 30px;
   padding-top: 6px;

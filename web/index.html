@@ -14,9 +14,6 @@
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="bootstrap/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
     <!-- Custom styles for this template -->
     <link href="css/styles.css" rel="stylesheet">
 
@@ -63,20 +60,20 @@
 
         <form class="form-inline" action="#">
             <div class="form-group">
-                <label for="date">Date:</label>
+                <!--<label for="date">Date:</label>-->
                 <input type="date" class="form-control" id="date">
             </div>
-            <button type="submit" class="btn btn-default">Get prediction</button>
+            <button type="submit" class="btn btn-primary pull-right">Get prediction</button>
         </form>
     </div>
 
 
 
     <center>
-        <img class="cutlery left" style="float:left" src="img/fork.svg" width="50">
+        <img class="cutlery left" style="float:left" src="img/fork.svg" height="115">
         <div id="center-text">
         </div>
-        <img class="cutlery right" style="float:right" src="img/knife.svg" width="50">
+        <img class="cutlery right" style="float:right" src="img/knife.svg" height="115">
     </center>
 
     <div class="row res">
@@ -92,28 +89,28 @@
 
         </div>
     </div>
-    <h3 class="res">Indicators</h3>
+    <h4 class="res">Indicators</h4>
     <div class="row res">
         <div class="col-xs-3">
-            <p>Weather:</p>
+            <!--<p>Weather:</p>-->
             <div class="well well-md" id="factors-weather">
                 <img src="https://content.meteoblue.com/var/ezwebin_site/storage/images/media/images/weather-pictograms/07_day_altocumulus/7323-1-eng-GB/07_day_altocumulus.png">
             </div>
         </div>
         <div class="col-xs-3">
-            <p>Holidays:</p>
+            <!--<p>Holidays:</p>-->
             <div class="well well-md" id="factors-holidays">
                 <span class="glyphicon glyphicon-calendar"></span>
             </div>
         </div>
         <div class="col-xs-3">
-            <p>Events:</p>
+            <!--<p>Events:</p>-->
             <div class="well well-md" id="factors-events">
                 <span class="glyphicon glyphicon-certificate"></span>
             </div>
         </div>
         <div class="col-xs-3">
-            <p>Lipsum:</p>
+            <!--<p>Lipsum:</p>-->
             <div class="well well-md" id="factors-placeholder">
                 <span class="glyphicon glyphicon-star"></span>
             </div>
@@ -137,8 +134,21 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script type="text/javascript">
+
+var client_id = 'hEVoxbEB7qkt2yuysgwo';
+var client_secret = 'MLtZAZ2BF6KiEvFeKNnsYQkeC9WHhEMMlq9E2rvb';
+
+var user = 'openhackdays18@prognolite.ch';
+var password = 'mWUtsY7UpPS';
+
+var accessToken = null;
+var accessTokenExpires = null;
+var refreshToken = null;
+
+
 $('form').on('submit',function(e){
     e.preventDefault();
+    updateWeatherIcon();
     $.ajax({
         type     : "GET",
         cache    : false,
@@ -158,12 +168,67 @@ $('form').on('submit',function(e){
                     evening: data.evening
                 }
             );
-        }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+        alert("API not reachable. Status: "+xhr.status);
+        alert(thrownError);
+      }
     });
 });
 
+var unixTime = function(datestr){
+  return Math.round((new Date(datestr).getTime()/1000));
+};
+
+var updateWeatherIcon = function() {
+  var timestamp = unixTime($('input[type="date"]').val());
+  var weatherParams = "?format=json&from="+timestamp+"&to="+timestamp+"&time_series=m-histd_meteoblue_fluntern_pictocode_f&language=en-gb#api-Timeserie-GetTimeserie"
+
+  $.ajax({
+  url: "https://api.prognolite.com/1.0/oauth/access_token.json",
+  data: {
+    "client_id": client_id,
+    "client_secret":client_secret,
+    "username": user,
+    "password": password,
+    "grant_type": "password"
+  },
+  method: 'POST',
+  success: function(res){
+    accessToken = res.access_token;
+    accessTokenExpires = Date.now() + res.expires_in * 60;
+    refreshToken = res.refresh_token;
+
+    performRequest();
+  }
+});
+// perform request:
+function performRequest(){
+  $.ajax({
+
+    //https://api.prognolite.com/1.0/doc/
+    url: "https://api.prognolite.com/1.0/en-gb/timeseries/get"+weatherParams,
+    data: {
+      "client_id": client_id,
+      "client_secret": client_secret,
+    },
+    headers: {
+      "Authorization": 'Bearer ' + accessToken
+    },
+    success: function(res){
+      var code = res.data[0]["m-histd_meteoblue_fluntern_pictocode_f"].val;
+      $("#factors-weather").html('<img src="img/weather/'+code+'_day.svg">');
+    }
+  });
+}
+
+
+  console.log(timestamp);
+};
+
 function drawDonut(indata) {
 
+  $("center").find("svg").remove();
   var width = window.innerWidth - 170,
     height = window.innerWidth - 170,
     radius = Math.min(width, height) / 2;
@@ -204,10 +269,7 @@ var data = [{cat: "Evening", people: indata.evening},{cat: "Noon", people: indat
 function type(d) {
   d.people = +d.people;
   return d;
-}
-
-}
-
+}}
 
 </script>
 </body>
