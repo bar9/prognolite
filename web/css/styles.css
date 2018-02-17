@@ -1,3 +1,7 @@
+html, body{
+  max-width: 375px;
+}
+
 body {
   padding-top: 50px;
 }
@@ -30,27 +34,27 @@ body {
   font-size: 25px;
   text-align: center;
   padding: 0px;
-  min-height: 14.5vw;
+  min-height: 16vw;
 }
 
 #factors-holidays {
   background-color: #5fdd58;
   color: white;
-  padding-top: 8px;
+  padding-top: 12px;
 }
 
 #factors-events {
-  background-color: #a984f9;
+  background-color: #dadada;
   color:white;
   font-size: 30px;
-  padding-top: 6px;
+  padding-top: 10px;
 }
 
 #factors-placeholder {
   background-color: #dadada;
   color: white;
   font-size: 30px;
-  padding-top: 6px;
+  padding-top: 10px;
 }
 
 #factors-weather img{

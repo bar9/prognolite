@@ -94,7 +94,8 @@
         <div class="col-xs-3">
             <!--<p>Weather:</p>-->
             <div class="well well-md" id="factors-weather">
-                <img src="https://content.meteoblue.com/var/ezwebin_site/storage/images/media/images/weather-pictograms/07_day_altocumulus/7323-1-eng-GB/07_day_altocumulus.png">
+                <img src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif">
+                <!--<img src="https://content.meteoblue.com/var/ezwebin_site/storage/images/media/images/weather-pictograms/07_day_altocumulus/7323-1-eng-GB/07_day_altocumulus.png">-->
             </div>
         </div>
         <div class="col-xs-3">
@@ -155,19 +156,20 @@ $('form').on('submit',function(e){
         url      : 'http://127.0.0.1:8081/api/v1.0/guests/'+'2017-30-42',
         success  : function(data) {
             //$(".printArea").empty().append(data).css('visibility','visible');
-            $("#prediction-guests-noon").html(data.noon).show();
-            $("#prediction-guests-evening").html(data.evening).show();
-            $(".res").show();
-            $("#factors-holidays").show();
-            $("#factors-weather").show();
-            $("#factors-events").show();
-            $("#factors-placeholder").show();
-            drawDonut(
-                {
-                    noon: data.noon,
-                    evening: data.evening
-                }
-            );
+            //$("#prediction-guests-noon").html(data.noon).show();
+            //$("#prediction-guests-evening").html(data.evening).show();
+            //$(".res").show();
+            //$("#factors-holidays").show();
+            //$("#factors-weather").show();
+            //$("#factors-events").show();
+            //$("#factors-placeholder").show();
+            //drawDonut(
+            //    {
+            //        noon: data.noon,
+            //        evening: data.evening
+            //    }
+            //);
+            updatePrediction();
         },
         error: function (xhr, ajaxOptions, thrownError) {
         alert("API not reachable. Status: "+xhr.status);
@@ -181,6 +183,8 @@ var unixTime = function(datestr){
 };
 
 var updateWeatherIcon = function() {
+  $("#factors-weather").html('<img src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif">');
+
   var timestamp = unixTime($('input[type="date"]').val());
   var weatherParams = "?format=json&from="+timestamp+"&to="+timestamp+"&time_series=m-histd_meteoblue_fluntern_pictocode_f&language=en-gb#api-Timeserie-GetTimeserie"
 
@@ -221,16 +225,83 @@ function performRequest(){
     }
   });
 }
+};
+
+var updatePrediction = function() {
+  var timestamp = unixTime($('input[type="date"]').val());
+  var predictionParams = "?time_series=f-sample-lunch_hd18_d0,f-sample-evening_hd18_d0&from="
+    + timestamp
+    + "&to="
+    + timestamp
+    + "&resolution=86400&format=json";
+
+    $.ajax({
+  url: "https://api.prognolite.com/1.0/oauth/access_token.json",
+  data: {
+    "client_id": client_id,
+    "client_secret":client_secret,
+    "username": user,
+    "password": password,
+    "grant_type": "password"
+  },
+  method: 'POST',
+  success: function(res){
+    accessToken = res.access_token;
+    accessTokenExpires = Date.now() + res.expires_in * 60;
+    refreshToken = res.refresh_token;
+
+    performRequest();
+  }
+});
+// perform request:
+function performRequest(){
+  $.ajax({
+
+    //https://api.prognolite.com/1.0/doc/
+    url: "https://api.prognolite.com/1.0/en-gb/timeseries/get"+predictionParams,
+    data: {
+      "client_id": client_id,
+      "client_secret": client_secret,
+    },
+    headers: {
+      "Authorization": 'Bearer ' + accessToken
+    },
+    success: function(res){
+      var data = {};
+
+      data.evening = parseInt(res.data[0]['f-sample-evening_hd18_d0'].val);
+      data.noon = parseInt(res.data[0]['f-sample-lunch_hd18_d0'].val);
 
 
-  console.log(timestamp);
+      $("#prediction-guests-noon").html(data.noon).show();
+      $("#prediction-guests-evening").html(data.evening).show();
+      $(".res").show();
+      $("#factors-holidays").show();
+      $("#factors-weather").show();
+      $("#factors-events").show();
+      $("#factors-placeholder").show();
+      drawDonut(
+        {
+          noon: data.noon,
+          evening: data.evening
+        }
+      );
+
+      //var code = res.data[0]["m-histd_meteoblue_fluntern_pictocode_f"].val;
+      //$("#factors-weather").html('<img src="img/weather/'+code+'_day.svg">');
+      console.log(res);
+    }
+  });
+}
+
+
 };
 
 function drawDonut(indata) {
 
   $("center").find("svg").remove();
-  var width = window.innerWidth - 170,
-    height = window.innerWidth - 170,
+  var width = $("body").width() - 170,
+    height = $("body").width() - 170,
     radius = Math.min(width, height) / 2;
 
 var color = d3.scale.ordinal()
